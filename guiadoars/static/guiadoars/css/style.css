@@ -1,0 +1,61 @@
+/* FUNDO DO SITE */
+
+body{
+background:#075586;
+}
+
+
+/* HERO */
+
+.hero{
+background:
+linear-gradient(rgba(9, 9, 84, 0.316), rgba(0,0,0,0.5)),
+url("../images/hero.jpg.jpg");
+
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+color:white;
+border-radius:12px;
+padding:100px 40px;
+}
+
+/* BUSCA */
+
+.search-box{
+border-radius:12px;
+margin-top:-30px;
+position:relative;
+z-index:2;
+}
+
+
+/* CARDS */
+
+.card{
+border:none;
+border-radius:12px;
+background: #61b8fa;;
+}
+
+
+/* EFEITO HOVER DOS CARDS */
+
+.card-hover{
+transition:all 0.3s ease;
+}
+
+.card-hover:hover{
+transform:translateY(-8px);
+box-shadow:0 15px 35px rgba(0,0,0,0.2);
+}
+
+
+/* BOTÕES */
+
+.btn-success{
+border-radius:30px;
+padding:10px 25px;
+font-weight:500;
+}

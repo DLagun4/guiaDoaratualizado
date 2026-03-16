@@ -1,0 +1,244 @@
+{% extends "guiadoars/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- HERO -->
+<div class="hero text-center py-5 mb-5">
+
+    <h1 class="display-3 fw-bold">
+        Doe e transforme vidas
+    </h1>
+
+    <p class="lead mt-3">
+        Encontre instituições confiáveis próximas de você e faça a diferença hoje.
+    </p>
+
+    <div class="mt-4">
+        <a href="#instituicoes" class="btn btn-light btn-lg me-3">
+            Ver instituições
+        </a>
+    </div>
+
+</div>
+
+
+<!-- BUSCA -->
+<div class="search-box p-4 shadow-sm bg-white rounded mt-4 mb-5">
+
+    <form method="GET" class="row g-3">
+
+        <div class="col-md-5">
+            <input type="text" name="cidade" class="form-control" placeholder="Cidade">
+        </div>
+
+        <div class="col-md-5">
+            <select name="tipo" class="form-select">
+
+                <option value="">Tipo de doação</option>
+                <option value="Alimentos">Alimentos</option>
+                <option value="Roupas">Roupas</option>
+                <option value="Livros">Livros</option>
+
+            </select>
+        </div>
+
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-success">
+                Buscar
+            </button>
+        </div>
+
+    </form>
+
+</div>
+
+
+<!-- COMO FUNCIONA -->
+<div class="row text-center mt-5">
+
+    <h2 class="mb-5">Como funciona</h2>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm p-4 h-100 card-hover">
+
+            <h2>🔎</h2>
+
+            <h5 class="mt-3">Encontre instituições</h5>
+
+            <p>
+                Busque por cidade e tipo de doação para encontrar instituições próximas.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm p-4 h-100 card-hover">
+
+            <h2>❤️</h2>
+
+            <h5 class="mt-3">Escolha como ajudar</h5>
+
+            <p>
+                Descubra quais doações cada instituição precisa.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm p-4 h-100 card-hover">
+
+            <h2>🎁</h2>
+
+            <h5 class="mt-3">Faça sua doação</h5>
+
+            <p>
+                Entre em contato com a instituição e faça a diferença.
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CATEGORIAS -->
+<div class="row text-center mt-5">
+
+    <h2 class="mb-4">Tipos de doação</h2>
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm h-100 card-hover">
+            <div class="card-body">
+
+                <h1>🍞</h1>
+
+                <h4 class="mt-3">Alimentos</h4>
+
+                <p>
+                    Doe alimentos para instituições que ajudam famílias em necessidade.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm h-100 card-hover">
+            <div class="card-body">
+
+                <h1>👕</h1>
+
+                <h4 class="mt-3">Roupas</h4>
+
+                <p>
+                    Ajude com roupas em bom estado para pessoas que precisam.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow-sm h-100 card-hover">
+            <div class="card-body">
+
+                <h1>📚</h1>
+
+                <h4 class="mt-3">Livros</h4>
+
+                <p>
+                    Compartilhe conhecimento doando livros para projetos sociais.
+                </p>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- CTA -->
+<div class="text-center mt-5 p-5 bg-light rounded">
+
+    <h3>Faça a diferença hoje</h3>
+
+    <p>
+        Uma pequena doação pode mudar a vida de alguém.
+    </p>
+
+    <a href="#instituicoes" class="btn btn-success btn-lg">
+        Ver instituições
+    </a>
+
+</div>
+
+
+<!-- INSTITUIÇÕES -->
+<h2 id="instituicoes" class="mt-5 mb-4">
+Instituições cadastradas
+</h2>
+
+<div class="row">
+
+{% for instituicao in instituicoes %}
+
+    <div class="col-md-4 mb-4">
+
+        <div class="card shadow h-100 card-hover">
+
+            <div class="card-body">
+
+                <h5 class="card-title">
+                    {{ instituicao.nome }}
+                </h5>
+
+                <p class="card-text">
+                    {{ instituicao.descricao }}
+                </p>
+
+                <p>
+                    <strong>Cidade:</strong> {{ instituicao.cidade }}
+                </p>
+
+                <span class="badge bg-success">
+                    {{ instituicao.tipo_doacao }}
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+{% empty %}
+
+    <div class="col-12 text-center">
+        <p class="text-muted">
+            Nenhuma instituição cadastrada ainda.
+        </p>
+    </div>
+
+{% endfor %}
+
+</div>
+
+{% endblock %}
