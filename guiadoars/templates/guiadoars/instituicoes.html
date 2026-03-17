@@ -1,0 +1,31 @@
+{% extends "guiadoars/base.html" %} {% block content %}
+
+<h2 class="mt-5 mb-4">Instituições cadastradas</h2>
+
+<div class="row">
+  {% for instituicao in instituicoes %}
+
+  <div class="col-md-4 mb-4">
+    <div class="card shadow h-100 card-hover">
+      <div class="card-body">
+        <h5 class="card-title">{{ instituicao.nome }}</h5>
+
+        <p class="card-text">{{ instituicao.descricao }}</p>
+
+        <p><strong>Cidade:</strong> {{ instituicao.cidade }}</p>
+
+        <span class="badge bg-success"> {{ instituicao.tipo_doacao }} </span>
+      </div>
+    </div>
+  </div>
+
+  {% empty %}
+
+  <div class="col-12 text-center">
+    <p class="text-muted">Nenhuma instituição cadastrada ainda.</p>
+  </div>
+
+  {% endfor %}
+</div>
+
+{% endblock %}

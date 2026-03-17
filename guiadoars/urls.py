@@ -19,4 +19,5 @@ from . import views
 
 urlpatterns = [
     path('', views.index, name='index'),
+    path('instituicoes/', views.lista_instituicoes, name='instituicoes'),
 ]

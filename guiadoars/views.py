@@ -13,3 +13,13 @@ def index(request):
     return render(request, "guiadoars/home.html", {
         "instituicoes": instituicoes
     })
+
+
+from .models import Instituicao
+from django.shortcuts import render
+
+def lista_instituicoes(request):
+    instituicoes = Instituicao.objects.all()
+    return render(request, 'guiadoars/instituicoes.html', {
+        'instituicoes': instituicoes
+    })
