@@ -84,3 +84,57 @@ section {
     height: 70px;
     object-fit: contain;
 }
+
+/* CONFIGURAÇÕES DA NAVBAR */
+.navbar-custom {
+    background: #ffffff;
+    backdrop-filter: blur(100px);
+    padding-top: 1px;
+    padding-bottom: 1px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+}
+.nav-link {
+    font-size: 1.1rem; /* aumenta aqui */
+    font-weight: 500;
+}
+.navbar-nav {
+    gap: 20px;
+}
+.nav-link {
+    position: relative;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333 !important;
+    transition: 0.3s;
+}
+
+/* LINHA */
+.nav-link::after {
+    content: "";
+    position: absolute;
+    width: 0%;
+    height: 2px;
+    left: 0;
+    bottom: -5px;
+    background: #000000;
+    transition: 0.3s;
+}
+
+/* HOVER */
+.nav-link:hover::after {
+    width: 100%;
+}
+.navbar-scrolled {
+    background: #ffffff !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+.navbar-custom {
+    transition: all 0.3s ease;
+}
+.brand-name {
+    font-weight: 800; /* mais forte */
+    font-size: 1.5rem;
+    color: #000000;
+    letter-spacing: 0.5px;
+}
