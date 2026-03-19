@@ -1,24 +1,26 @@
 /* FUNDO DO SITE */
 
-body{
-background:#075586;
+body {
+    background: linear-gradient(to bottom, #84bdf6, #03428e);
 }
 
 
 /* HERO */
 
-.hero{
-background:
-linear-gradient(rgba(9, 9, 84, 0.316), rgba(0,0,0,0.5)),
-url("../images/hero.jpg.jpg");
+.hero {
+    background: linear-gradient(
+        rgba(0, 0, 0, 0.6),
+        rgba(0, 0, 0, 0.6)
+    ),
+    url("../images/hero.jpg.jpg");
 
-background-size:cover;
-background-position:center;
-background-repeat:no-repeat;
+    background-size: cover;
+    background-position: center;
 
-color:white;
-border-radius:12px;
-padding:100px 40px;
+    color: rgb(255, 255, 255);
+    border-radius: 16px;
+    padding: 100px 80px;
+    text-align: center;
 }
 
 /* BUSCA */
@@ -42,20 +44,43 @@ background: #61b8fa;;
 
 /* EFEITO HOVER DOS CARDS */
 
-.card-hover{
-transition:all 0.3s ease;
+.card-hover {
+    border: none;
+    border-radius: 16px;
+    transition: all 0.3s ease;
+    background: white;
 }
 
-.card-hover:hover{
-transform:translateY(-8px);
-box-shadow:0 15px 35px rgba(0,0,0,0.2);
+.card-hover:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
 }
-
 
 /* BOTÕES */
 
-.btn-success{
-border-radius:30px;
-padding:10px 25px;
-font-weight:500;
+.btn-success {
+    background: linear-gradient(135deg, #22c55e, #16a34a);
+    border: none;
+    border-radius: 30px;
+    padding: 12px 28px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-success:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+
+/* SEPARAR BLOCOS */
+section {
+    margin-top: 80px;
+    margin-bottom: 80px;
+}
+
+.logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
 }
