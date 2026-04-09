@@ -27,6 +27,19 @@ class Entry(models.Model):
 
 from django.db import models
 
+class CategoriaDoacao(models.Model):
+    nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da categoria")
+    descricao = models.TextField(blank=True, verbose_name="Descrição")
+    personalizada = models.BooleanField(default=False, verbose_name="Categoria personalizada?")
+
+    class Meta:
+        verbose_name = "Categoria de Doação"
+        verbose_name_plural = "Categorias de Doação"
+        ordering = ['nome']
+
+    def __str__(self):
+        return self.nome
+
 class Instituicao(models.Model):
     # Choices para tipo de instituição
     TIPO_INSTITUICAO_CHOICES = [
