@@ -1,155 +1,148 @@
-{% extends "guiadoars/base.html" %} {% load static %} {% block content %}
+{% extends "guiadoars/base.html" %}
+{% load static %}
 
+{% block content %}
 
 <!-- HERO -->
 <div class="hero text-center py-5 mb-5">
-<h1 class="display-3 fw-bold">
-Doe e transforme vidas
-</h1>
-
-<p class="lead mt-3">
-Conectamos você a instituições confiáveis perto de você.
-</p>
-
+  <h1 class="display-3 fw-bold">Doe e transforme vidas</h1>
+  <p class="lead mt-3">Conectamos você a instituições confiáveis perto de você.</p>
   <div class="mt-4">
-    <a href="#instituicoes" class="btn btn-light btn-lg me-3">
-      Ver instituições
-    </a>
+    <a href="#instituicoes" class="btn btn-light btn-lg me-3">Ver instituições</a>
   </div>
 </div>
 
 <!-- BUSCA -->
 <div class="search-box p-4 shadow-sm bg-white rounded mt-4 mb-5">
-  <form method="GET" class="row g-3">
-    <div class="col-md-5">
-      <input type="text" name="cidade" class="form-control" placeholder="Cidade" value="{{ cidade_filtro }}" />
+  <form method="GET" class="row g-4">
+    <!-- Campo Cidade com ícone -->
+    <div class="col-md-4">
+      <label class="form-label fw-semibold"><i class="bi bi-geo-alt-fill me-1"></i> Cidade</label>
+      <input type="text" name="cidade" class="form-control" placeholder="Ex: São Paulo" value="{{ cidade_filtro }}" />
     </div>
 
+    <!-- Checkboxes de Categorias com ícone -->
     <div class="col-md-5">
-      <select name="tipo" class="form-select">
-        <option value="">Tipo de doação</option>
+      <label class="form-label fw-semibold"><i class="bi bi-tags-fill me-1"></i> Tipos de doação</label>
+      <div class="d-flex flex-wrap gap-3">
         {% for cat in categorias %}
-        <option value="{{ cat.nome }}" {% if tipo_filtro == cat.nome %}selected{% endif %}>
-          {{ cat.nome }}
-        </option>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" name="tipo" value="{{ cat.nome }}" id="cat_{{ cat.id }}"
+                 {% if cat.nome in tipos_selecionados %}checked{% endif %}>
+          <label class="form-check-label" for="cat_{{ cat.id }}">
+            {{ cat.nome }}
+          </label>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Select de Tipo de Instituição com ícone -->
+    <div class="col-md-3">
+      <label class="form-label fw-semibold"><i class="bi bi-building me-1"></i> Tipo de instituição</label>
+      <select name="tipo_inst" class="form-select">
+        <option value="">Todos</option>
+        {% for value, label in tipos_instituicao_choices %}
+        <option value="{{ value }}" {% if tipo_inst_filtro == value %}selected{% endif %}>{{ label }}</option>
         {% endfor %}
       </select>
     </div>
 
-    <div class="col-md-2 d-grid">
-      <button class="btn btn-success">Buscar</button>
+    <!-- Botão Buscar -->
+    <div class="col-12 d-grid">
+      <button class="btn btn-success btn-lg" type="submit">Buscar instituições</button>
     </div>
   </form>
-  <!-- RESULTADOS DA BUSCA -->
-  <div class="row mt-5" id="instituicoes">
-    <h2 class="mb-4">Instituições encontradas</h2>
+</div>
 
-    {% if instituicoes %}
-    <div class="row">
-      {% for instituicao in instituicoes %}
-      <div class="col-md-4 mb-4">
-        <div class="card shadow-sm h-100">
-          <div class="card-body">
-            <h5 class="card-title">{{ instituicao.nome }}</h5>
-            <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
-            <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
-            <p><i class="bi bi-tags"></i> <strong>Doações:</strong>
-              {% for cat in instituicao.categorias_doacao.all %}
-              {{ cat.nome }}{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            </p>
-            <p><i class="bi bi-building"></i> <strong>Tipo:</strong> {{ instituicao.get_tipo_instituicao_display }}</p>
-            {% if instituicao.telefone %}
-            <p><i class="bi bi-telephone"></i> {{ instituicao.telefone }}</p>
-            {% endif %}
-            <a href="#" class="btn btn-outline-success btn-sm">Entrar em contato</a>
-          </div>
+<!-- RESULTADOS DA BUSCA -->
+<div class="row mt-5" id="instituicoes">
+  <h2 class="mb-4">Instituições encontradas</h2>
+  <p class="text-muted mb-4">{{ instituicoes|length }} instituição(ões) encontrada(s)</p>
+
+  {% if instituicoes %}
+  <div class="row">
+    {% for instituicao in instituicoes %}
+    <div class="col-md-4 mb-4">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ instituicao.nome }}</h5>
+          <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
+          <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
+          <p>
+            {% for cat in instituicao.categorias_doacao.all %}
+            <span class="category-tag" data-cat="{{ cat.nome }}">{{ cat.nome }}</span>
+            {% endfor %}
+          </p>
+          <p><i class="bi bi-building"></i> <strong>Tipo:</strong> {{ instituicao.get_tipo_instituicao_display }}</p>
+          {% if instituicao.telefone %}
+          <p><i class="bi bi-telephone"></i> {{ instituicao.telefone }}</p>
+          {% endif %}
+          <a href="#" class="btn btn-outline-success btn-sm">Entrar em contato</a>
         </div>
       </div>
-      {% endfor %}
     </div>
-    {% else %}
-    <div class="alert alert-info">
-      Nenhuma instituição encontrada com os critérios informados.
-    </div>
-    {% endif %}
+    {% endfor %}
   </div>
+  {% else %}
+  <div class="alert alert-info">
+    Nenhuma instituição encontrada com os critérios informados.
+  </div>
+  {% endif %}
 </div>
 
 <!-- COMO FUNCIONA -->
 <div class="row text-center mt-5">
   <h2 class="mb-5">Como funciona</h2>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm p-4 h-100 card-hover">
       <i class="bi bi-search icon-card"></i>
-
       <h5 class="mt-3">Encontre instituições</h5>
-
-      <p>
-        Busque por cidade e tipo de doação para encontrar instituições próximas.
-      </p>
+      <p>Busque por cidade e tipo de doação para encontrar instituições próximas.</p>
     </div>
   </div>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm p-4 h-100 card-hover">
       <i class="bi bi-heart icon-card"></i>
-
       <h5 class="mt-3">Escolha como ajudar</h5>
-
       <p>Descubra quais doações cada instituição precisa.</p>
     </div>
   </div>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm p-4 h-100 card-hover">
       <i class="bi bi-gift icon-card"></i>
-
       <h5 class="mt-3">Faça sua doação</h5>
-
       <p>Entre em contato com a instituição e faça a diferença.</p>
     </div>
   </div>
 </div>
 
-<!-- CATEGORIAS -->
+<!-- CATEGORIAS DESTAQUE -->
 <div class="row text-center mt-5">
   <h2 class="mb-4">Tipos de doação</h2>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm h-100 card-hover">
       <div class="card-body">
-       <i class="bi bi-basket icon-card"></i>
-
+        <i class="bi bi-basket icon-card"></i>
         <h4 class="mt-3">Alimentos</h4>
-
-        <p>
-          Doe alimentos para instituições que ajudam famílias em necessidade.
-        </p>
+        <p>Doe alimentos para instituições que ajudam famílias em necessidade.</p>
       </div>
     </div>
   </div>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm h-100 card-hover">
       <div class="card-body">
         <i class="bi bi-person icon-card"></i>
-
         <h4 class="mt-3">Roupas</h4>
-
         <p>Ajude com roupas em bom estado para pessoas que precisam.</p>
       </div>
     </div>
   </div>
-
   <div class="col-md-4 mb-4">
     <div class="card shadow-sm h-100 card-hover">
       <div class="card-body">
         <i class="bi bi-book icon-card"></i>
-
         <h4 class="mt-3">Livros</h4>
-
         <p>Compartilhe conhecimento doando livros para projetos sociais.</p>
       </div>
     </div>
@@ -159,10 +152,22 @@ Conectamos você a instituições confiáveis perto de você.
 <!-- CTA -->
 <div class="text-center mt-5 p-5 bg-light rounded">
   <h3>Faça a diferença hoje</h3>
-
   <p>Uma pequena doação pode mudar a vida de alguém.</p>
-
-  <a href="#instituicoes" class="btn btn-success btn-lg"> Ver instituições </a>
+  <a href="#instituicoes" class="btn btn-success btn-lg">Ver instituições</a>
 </div>
+
+<!-- Spinner no botão de busca (melhoria de usabilidade) -->
+<script>
+  (function() {
+    const form = document.querySelector('form');
+    const btn = form?.querySelector('button[type="submit"]');
+    if (form && btn) {
+      form.addEventListener('submit', function() {
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Buscando...';
+      });
+    }
+  })();
+</script>
 
 {% endblock %}

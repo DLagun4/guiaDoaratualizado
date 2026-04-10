@@ -1,140 +1,237 @@
-/* FUNDO DO SITE */
+/* style.css - GuiaDoar (versão aprimorada) */
 
+/* RESET E FUNDO */
 body {
-    background: linear-gradient(to bottom, #84bdf6, #03428e);
+    background: #f4f7fc;
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
 }
-
 
 /* HERO */
-
 .hero {
-    background: linear-gradient(
-        rgba(0, 0, 0, 0.6),
-        rgba(0, 0, 0, 0.6)
-    ),
-    url("../images/hero.jpg.jpg");
-
-    background-size: cover;
-    background-position: center;
-
-    color: rgb(255, 255, 255);
-    border-radius: 16px;
-    padding: 100px 80px;
+    background: linear-gradient(135deg, #0b5e2e 0%, #0a3b1e 100%);
+    color: white;
+    border-radius: 1.5rem;
+    padding: 4rem 2rem;
     text-align: center;
+    margin-bottom: 2rem;
 }
 
-/* BUSCA */
-
-.search-box{
-border-radius:12px;
-margin-top:-30px;
-position:relative;
-z-index:2;
+.hero h1 {
+    font-weight: 800;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
+/* CAIXA DE BUSCA */
+.search-box {
+    background: white;
+    border-radius: 1.5rem;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    padding: 1.8rem;
+    margin-top: -2rem;
+    position: relative;
+    z-index: 2;
+}
 
 /* CARDS */
-
-.card{
-border:none;
-border-radius:12px;
-background: #61b8fa;;
-}
-
-
-/* EFEITO HOVER DOS CARDS */
-
-.card-hover {
+.card {
     border: none;
-    border-radius: 16px;
-    transition: all 0.3s ease;
+    border-radius: 1.25rem;
     background: white;
+    transition: transform 0.2s, box-shadow 0.2s;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
-.card-hover:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+.card-body {
+    padding: 1.5rem;
 }
 
-/* BOTÕES */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+}
 
-.btn-success {
-    background: linear-gradient(135deg, #22c55e, #16a34a);
-    border: none;
-    border-radius: 30px;
-    padding: 12px 28px;
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 30px rgba(0,0,0,0.1);
+}
+
+.card-title {
+    color: #0b5e2e;
+    font-weight: 700;
+}
+
+/* TAGS DE CATEGORIAS */
+.category-tag {
+    background-color: #e6f4ea;
+    color: #0b5e2e;
+    padding: 0.25rem 0.75rem;
+    border-radius: 2rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    transition: 0.3s;
+    display: inline-block;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+/* BOTÃO SUCESSO */
+.btn-success {
+    background: linear-gradient(135deg, #0b5e2e, #0a3b1e);
+    border: none;
+    border-radius: 2rem;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    transition: 0.2s;
 }
 
 .btn-success:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+    transform: scale(1.02);
+    background: linear-gradient(135deg, #0e6e36, #0c4a25);
 }
 
+.btn-outline-success {
+    border-radius: 2rem;
+    border-color: #0b5e2e;
+    color: #0b5e2e;
+}
 
-/* SEPARAR BLOCOS */
-section {
-    margin-top: 80px;
-    margin-bottom: 80px;
+.btn-outline-success:hover {
+    background-color: #0b5e2e;
+    border-color: #0b5e2e;
+}
+
+/* ÍCONES */
+.icon-card {
+    font-size: 2rem;
+    color: #0b5e2e;
+    margin-bottom: 0.5rem;
+    display: inline-block;
+}
+
+/* NAVBAR */
+.navbar-custom {
+    background: white;
+    backdrop-filter: none;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    padding: 0.5rem 0;
+}
+
+.brand-name {
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: #0b5e2e;
+    letter-spacing: -0.5px;
 }
 
 .logo {
-    width: 70px;
-    height: 70px;
+    width: 45px;
+    height: 45px;
     object-fit: contain;
 }
 
-/* CONFIGURAÇÕES DA NAVBAR */
-.navbar-custom {
-    background: #ffffff;
-    backdrop-filter: blur(100px);
-    padding-top: 1px;
-    padding-bottom: 1px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-}
 .nav-link {
-    font-size: 1.1rem; /* aumenta aqui */
     font-weight: 500;
-}
-.navbar-nav {
-    gap: 20px;
-}
-.nav-link {
-    position: relative;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #333 !important;
-    transition: 0.3s;
+    color: #1f2937 !important;
+    transition: 0.2s;
 }
 
-/* LINHA */
+.nav-link:hover {
+    color: #0b5e2e !important;
+}
+
 .nav-link::after {
-    content: "";
-    position: absolute;
-    width: 0%;
-    height: 2px;
-    left: 0;
-    bottom: -5px;
-    background: #000000;
-    transition: 0.3s;
+    background: #0b5e2e;
 }
 
-/* HOVER */
-.nav-link:hover::after {
-    width: 100%;
+/* RODAPÉ */
+footer {
+    background: #0b2b1a !important;
+    border-top: none;
 }
-.navbar-scrolled {
-    background: #ffffff !important;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    transition: 0.3s;
+
+/* CHECKBOXES E FORMULÁRIO */
+.form-check-input:checked {
+    background-color: #0b5e2e;
+    border-color: #0b5e2e;
 }
-.navbar-custom {
-    transition: all 0.3s ease;
+
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1rem;
+    }
+    .search-box {
+        margin-top: -1rem;
+    }
 }
-.brand-name {
-    font-weight: 800; /* mais forte */
-    font-size: 1.5rem;
-    color: #000000;
-    letter-spacing: 0.5px;
+
+/* CORES DE DESTAQUE */
+:root {
+    --primary: #0b5e2e;
+    --primary-light: #2e7d4e;
+    --secondary: #ffc107;
+    --info: #17a2b8;
+    --gray-light: #f8f9fa;
+    --gray-border: #e9ecef;
+}
+
+/* BOTÃO SECUNDÁRIO (Ver instituições, etc.) */
+.btn-light {
+    background-color: white;
+    color: var(--primary);
+    border: 1px solid var(--primary);
+    border-radius: 2rem;
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.btn-light:hover {
+    background-color: var(--primary);
+    color: white;
+    transform: scale(1.02);
+}
+
+/* LINKS */
+a {
+    color: var(--primary);
+    text-decoration: none;
+}
+a:hover {
+    color: var(--primary-light);
+    text-decoration: underline;
+}
+
+/* ALERTAS */
+.alert-info {
+    background-color: #e6f4ea;
+    border-color: #c3e6cb;
+    color: #155724;
+    border-radius: 1rem;
+}
+
+/* TAGS COM CORES DIFERENTES POR CATEGORIA */
+.category-tag[data-cat="Alimentos"] { background-color: #fdebd0; color: #d35400; }
+.category-tag[data-cat="Roupas"] { background-color: #d5f5e3; color: #27ae60; }
+.category-tag[data-cat="Livros"] { background-color: #e8daef; color: #8e44ad; }
+.category-tag[data-cat="Brinquedos"] { background-color: #fcf3cf; color: #f1c40f; }
+.category-tag[data-cat="Móveis"] { background-color: #d6eaf8; color: #2980b9; }
+.category-tag[data-cat="Eletrônicos"] { background-color: #f5b7b1; color: #c0392b; }
+.category-tag[data-cat="Material escolar"] { background-color: #d1f2eb; color: #1abc9c; }
+.category-tag[data-cat="Higiene pessoal"] { background-color: #fadbd8; color: #e74c3c; }
+.category-tag[data-cat="Outros"] { background-color: #e5e7e9; color: #7f8c8d; }
+
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1rem;
+    }
+    .search-box {
+        margin-top: -1rem;
+        padding: 1rem;
+    }
+    .form-check {
+        margin-right: 1rem;
+    }
+    .d-flex.flex-wrap.gap-3 {
+        gap: 0.5rem !important;
+    }
 }
