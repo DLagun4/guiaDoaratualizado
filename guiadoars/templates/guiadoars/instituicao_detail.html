@@ -1,0 +1,118 @@
+{% extends "guiadoars/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- Breadcrumb (navegação) -->
+    <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'index' %}">Home</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'index' %}#instituicoes">Instituições</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ instituicao.nome }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- COLUNA ESQUERDA: informações principais -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <!-- cabeçalho com nome e badge -->
+                    <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
+                        <h1 class="card-title mb-2">{{ instituicao.nome }}</h1>
+                        <span class="badge bg-success fs-6 px-3 py-2">{{ instituicao.get_tipo_instituicao_display }}</span>
+                    </div>
+
+                    <!-- descrição -->
+                    <hr>
+                    <h5><i class="bi bi-file-text-fill me-2"></i> Sobre</h5>
+                    <p class="text-muted">{{ instituicao.descricao|default:"Sem descrição cadastrada."|linebreaks }}</p>
+
+                    <!-- endereço -->
+                    <hr>
+                    <h5><i class="bi bi-geo-alt-fill me-2"></i> Endereço</h5>
+                    <address class="mb-0">
+                        {{ instituicao.endereco|default:"Endereço não informado" }}<br>
+                        {{ instituicao.cidade }} - {{ instituicao.estado|default:"UF não informada" }}<br>
+                        <abbr title="CEP">CEP:</abbr> {{ instituicao.cep|default:"Não informado" }}
+                    </address>
+
+                    <!-- doações aceitas (tags coloridas) -->
+                    <hr>
+                    <h5><i class="bi bi-tags-fill me-2"></i> Doações aceitas</h5>
+                    <div>
+                        {% for cat in instituicao.categorias_doacao.all %}
+                        <span class="category-tag" data-cat="{{ cat.nome }}">{{ cat.nome }}</span>
+                        {% empty %}
+                        <span class="text-muted">Nenhuma categoria informada.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COLUNA DIREITA: contato e horários -->
+        <div class="col-lg-4">
+            <!-- contato -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5><i class="bi bi-telephone-fill me-2"></i> Contato</h5>
+                    <ul class="list-unstyled mb-0">
+                        <li class="mb-2"><i class="bi bi-telephone me-2"></i> {{ instituicao.telefone|default:"Não informado" }}</li>
+                        <li class="mb-2"><i class="bi bi-envelope me-2"></i> {{ instituicao.email|default:"Não informado" }}</li>
+                        <li class="mb-2"><i class="bi bi-globe me-2"></i>
+                            {% if instituicao.site %}
+                            <a href="{{ instituicao.site }}" target="_blank" rel="noopener noreferrer">{{ instituicao.site }}</a>
+                            {% else %}
+                            Não informado
+                            {% endif %}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Horário de funcionamento -->
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5><i class="bi bi-clock-fill me-2"></i> Horário de funcionamento</h5>
+                    {% if instituicao.horarios.all %}
+                    <div class="table-responsive mt-3">
+                        <table class="table table-sm table-hover align-middle">
+                            <thead class="table-light">
+                            <tr>
+                                <th scope="col">Dia da semana</th>
+                                <th scope="col">Horário</th>
+                                <th scope="col">Intervalo</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for horario in instituicao.horarios.all %}
+                            <tr>
+                                <td class="fw-semibold">{{ horario.get_dia_semana_display }}</td>
+                                <td>{{ horario.abertura|time:"H:i" }} – {{ horario.fechamento|time:"H:i" }}</td>
+                                <td>
+                                    {% if horario.intervalo_inicio and horario.intervalo_fim %}
+                                    {{ horario.intervalo_inicio|time:"H:i" }} – {{ horario.intervalo_fim|time:"H:i" }}
+                                    {% else %}
+                                    —
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <p class="text-muted mb-0 mt-2">Não informado</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+    <!-- botão voltar -->
+    <div class="text-center mt-5">
+        <a href="{% url 'index' %}#instituicoes" class="btn btn-outline-success rounded-pill px-4">
+            <i class="bi bi-arrow-left me-1"></i> Voltar para resultados
+        </a>
+    </div>
+</div>
+{% endblock %}

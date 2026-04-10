@@ -47,3 +47,11 @@ def lista_instituicoes(request):
     return render(request, 'guiadoars/instituicoes.html', {
         'instituicoes': instituicoes
     })
+
+from django.shortcuts import get_object_or_404
+
+def instituicao_detail(request, pk):
+    instituicao = get_object_or_404(Instituicao, pk=pk, ativa=True)
+    return render(request, 'guiadoars/instituicao_detail.html', {
+        'instituicao': instituicao
+    })

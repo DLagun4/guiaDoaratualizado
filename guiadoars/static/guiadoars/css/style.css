@@ -235,3 +235,33 @@ a:hover {
         gap: 0.5rem !important;
     }
 }
+
+.breadcrumb-item a {
+    color: #0b5e2e;
+    text-decoration: none;
+}
+.breadcrumb-item.active {
+    color: #6c757d;
+}
+.card {
+    transition: transform 0.2s;
+}
+.card:hover {
+    transform: translateY(-3px);
+}
+.ratio-4x3 {
+    --bs-aspect-ratio: 75%;
+}
+
+.table th {
+    font-weight: 600;
+    color: #1f2937;
+    border-bottom-width: 1px;
+}
+.table td {
+    vertical-align: middle;
+    color: #4b5563;
+}
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+}

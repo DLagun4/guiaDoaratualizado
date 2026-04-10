@@ -64,23 +64,26 @@
   <div class="row">
     {% for instituicao in instituicoes %}
     <div class="col-md-4 mb-4">
-      <div class="card shadow-sm h-100">
-        <div class="card-body">
-          <h5 class="card-title">{{ instituicao.nome }}</h5>
-          <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
-          <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
-          <p>
-            {% for cat in instituicao.categorias_doacao.all %}
-            <span class="category-tag" data-cat="{{ cat.nome }}">{{ cat.nome }}</span>
-            {% endfor %}
-          </p>
-          <p><i class="bi bi-building"></i> <strong>Tipo:</strong> {{ instituicao.get_tipo_instituicao_display }}</p>
-          {% if instituicao.telefone %}
-          <p><i class="bi bi-telephone"></i> {{ instituicao.telefone }}</p>
-          {% endif %}
-          <a href="#" class="btn btn-outline-success btn-sm">Entrar em contato</a>
+      <!-- Card inteiro clicável -->
+      <a href="{% url 'instituicao_detail' instituicao.id %}" class="text-decoration-none">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ instituicao.nome }}</h5>
+            <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
+            <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
+            <p>
+              {% for cat in instituicao.categorias_doacao.all %}
+              <span class="category-tag" data-cat="{{ cat.nome }}">{{ cat.nome }}</span>
+              {% endfor %}
+            </p>
+            <p><i class="bi bi-building"></i> <strong>Tipo:</strong> {{ instituicao.get_tipo_instituicao_display }}</p>
+            {% if instituicao.telefone %}
+            <p><i class="bi bi-telephone"></i> {{ instituicao.telefone }}</p>
+            {% endif %}
+            <span class="btn btn-outline-success btn-sm mt-2">Ver detalhes →</span>
+          </div>
         </div>
-      </div>
+      </a>
     </div>
     {% endfor %}
   </div>
@@ -156,7 +159,7 @@
   <a href="#instituicoes" class="btn btn-success btn-lg">Ver instituições</a>
 </div>
 
-<!-- Spinner no botão de busca (melhoria de usabilidade) -->
+<!-- Spinner no botão de busca -->
 <script>
   (function() {
     const form = document.querySelector('form');

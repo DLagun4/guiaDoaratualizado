@@ -40,6 +40,32 @@ class CategoriaDoacao(models.Model):
     def __str__(self):
         return self.nome
 
+class HorarioFuncionamento(models.Model):
+    DIAS_SEMANA = [
+        (0, 'Segunda-feira'),
+        (1, 'Terça-feira'),
+        (2, 'Quarta-feira'),
+        (3, 'Quinta-feira'),
+        (4, 'Sexta-feira'),
+        (5, 'Sábado'),
+        (6, 'Domingo'),
+    ]
+
+    instituicao = models.ForeignKey('Instituicao', on_delete=models.CASCADE, related_name='horarios')
+    dia_semana = models.IntegerField(choices=DIAS_SEMANA, verbose_name="Dia da semana")
+    abertura = models.TimeField(verbose_name="Abre às")
+    fechamento = models.TimeField(verbose_name="Fecha às")
+    intervalo_inicio = models.TimeField(blank=True, null=True, verbose_name="Intervalo (início)")
+    intervalo_fim = models.TimeField(blank=True, null=True, verbose_name="Intervalo (fim)")
+
+    class Meta:
+        verbose_name = "Horário de funcionamento"
+        verbose_name_plural = "Horários de funcionamento"
+        ordering = ['instituicao', 'dia_semana']
+
+    def __str__(self):
+        return f"{self.get_dia_semana_display()}: {self.abertura} - {self.fechamento}"
+
 class Instituicao(models.Model):
     # Choices para tipo de instituição
     TIPO_INSTITUICAO_CHOICES = [
