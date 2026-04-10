@@ -22,20 +22,17 @@ Conectamos você a instituições confiáveis perto de você.
 <div class="search-box p-4 shadow-sm bg-white rounded mt-4 mb-5">
   <form method="GET" class="row g-3">
     <div class="col-md-5">
-      <input
-        type="text"
-        name="cidade"
-        class="form-control"
-        placeholder="Cidade"
-      />
+      <input type="text" name="cidade" class="form-control" placeholder="Cidade" value="{{ cidade_filtro }}" />
     </div>
 
     <div class="col-md-5">
       <select name="tipo" class="form-select">
         <option value="">Tipo de doação</option>
-        <option value="Alimentos">Alimentos</option>
-        <option value="Roupas">Roupas</option>
-        <option value="Livros">Livros</option>
+        {% for cat in categorias %}
+        <option value="{{ cat.nome }}" {% if tipo_filtro == cat.nome %}selected{% endif %}>
+          {{ cat.nome }}
+        </option>
+        {% endfor %}
       </select>
     </div>
 
@@ -43,6 +40,40 @@ Conectamos você a instituições confiáveis perto de você.
       <button class="btn btn-success">Buscar</button>
     </div>
   </form>
+  <!-- RESULTADOS DA BUSCA -->
+  <div class="row mt-5" id="instituicoes">
+    <h2 class="mb-4">Instituições encontradas</h2>
+
+    {% if instituicoes %}
+    <div class="row">
+      {% for instituicao in instituicoes %}
+      <div class="col-md-4 mb-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ instituicao.nome }}</h5>
+            <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
+            <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
+            <p><i class="bi bi-tags"></i> <strong>Doações:</strong>
+              {% for cat in instituicao.categorias_doacao.all %}
+              {{ cat.nome }}{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+            <p><i class="bi bi-building"></i> <strong>Tipo:</strong> {{ instituicao.get_tipo_instituicao_display }}</p>
+            {% if instituicao.telefone %}
+            <p><i class="bi bi-telephone"></i> {{ instituicao.telefone }}</p>
+            {% endif %}
+            <a href="#" class="btn btn-outline-success btn-sm">Entrar em contato</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="alert alert-info">
+      Nenhuma instituição encontrada com os critérios informados.
+    </div>
+    {% endif %}
+  </div>
 </div>
 
 <!-- COMO FUNCIONA -->

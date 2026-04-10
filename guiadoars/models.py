@@ -65,14 +65,14 @@ class Instituicao(models.Model):
     telefone = models.CharField(max_length=20, verbose_name="Telefone", blank=True)
     email = models.EmailField(verbose_name="E-mail", blank=True)
     site = models.URLField(verbose_name="Site", blank=True)
-    
-    # Tipos de doação aceitos (pode ser um campo de texto simples ou ManyToMany futuramente)
-    tipos_doacao = models.CharField(
-        max_length=200, 
-        verbose_name="Tipos de doação aceitos", 
-        blank=True,
-        help_text="Separe por vírgula. Ex: roupas, alimentos, brinquedos"
-    )
+
+    # Relacionamento com categorias de doação (muitos-para-muitos)
+    categorias_doacao = models.ManyToManyField(
+    CategoriaDoacao,
+    blank=True,
+    verbose_name="Categorias de doação aceitas",
+    help_text="Selecione uma ou mais categorias"
+)
     
     # Classificação
     tipo_instituicao = models.CharField(

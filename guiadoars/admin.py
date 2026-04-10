@@ -1,12 +1,8 @@
 from django.contrib import admin
-from guiadoars.models import Topic, Entry
-
-from django.contrib import admin
-from .models import Instituicao
+from .models import Instituicao, CategoriaDoacao
 
 @admin.register(Instituicao)
 class InstituicaoAdmin(admin.ModelAdmin):
-
     list_display = [
         'nome',
         'cidade',
@@ -16,9 +12,7 @@ class InstituicaoAdmin(admin.ModelAdmin):
         'ativa',
         'data_cadastro'
     ]
-
     list_display_links = ['nome']
-
     list_filter = [
         'ativa',
         'tipo_instituicao',
@@ -26,17 +20,14 @@ class InstituicaoAdmin(admin.ModelAdmin):
         'estado',
         'data_cadastro'
     ]
-
-      # Campos que serão pesquisáveis
     search_fields = [
-        'nome', 
-        'cidade', 
-        'endereco', 
-        'descricao', 
-        'tipos_doacao'
+        'nome',
+        'cidade',
+        'endereco',
+        'descricao',
+        # Não use 'tipos_doacao' pois foi substituído por 'categorias_doacao'
     ]
-    
-    # Organização dos campos no formulário de edição
+    filter_horizontal = ['categorias_doacao']   # Campo ManyToMany
     fieldsets = [
         (
             'Informações Básicas',
@@ -59,21 +50,20 @@ class InstituicaoAdmin(admin.ModelAdmin):
         (
             'Doações',
             {
-                'fields': ['tipos_doacao'],
-                'description': 'Tipos de doação aceitos (separados por vírgula)'
+                'fields': ['categorias_doacao'],   # substituído
+                'description': 'Selecione uma ou mais categorias de doação'
             }
         ),
         (
             'Geolocalização (opcional)',
             {
                 'fields': ['latitude', 'longitude'],
-                'classes': ['collapse']  # fica recolhido por padrão
+                'classes': ['collapse']
             }
         ),
     ]
-    
-    # Campos somente leitura (opcional)
     readonly_fields = ['data_cadastro']
-    
-    # Paginação na listagem
     list_per_page = 25
+
+# Registra o modelo CategoriaDoacao
+admin.site.register(CategoriaDoacao)
