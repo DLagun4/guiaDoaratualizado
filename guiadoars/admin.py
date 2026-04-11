@@ -29,10 +29,13 @@ class InstituicaoAdmin(admin.ModelAdmin):
         ('Doações', {
             'fields': ['categorias_doacao']
         }),
-        ('Geolocalização (opcional)', {
+        ('Geolocalização ', {
             'fields': ['latitude', 'longitude'],
             'classes': ['collapse']
         }),
     ]
+
+    class Media:
+        js = ('guiadoars/js/admin_map.js',)
 
 admin.site.register(CategoriaDoacao)

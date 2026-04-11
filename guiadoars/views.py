@@ -2,7 +2,7 @@
 Guarda na variável instituicoes
 Envia para o template home.html"""
 
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Instituicao, CategoriaDoacao
 
 
@@ -28,6 +28,13 @@ def index(request):
     todas_categorias = CategoriaDoacao.objects.all()
     tipos_choices = Instituicao.TIPO_INSTITUICAO_CHOICES
 
+    # Instituições com coordenadas para o mapa (todas ativas, sem filtro de cidade)
+    instituicoes_mapa = Instituicao.objects.filter(
+        ativa=True,
+        latitude__isnull=False,
+        longitude__isnull=False
+    ).values('id', 'nome', 'latitude', 'longitude', 'cidade')
+
     context = {
         'instituicoes': instituicoes,
         'cidade_filtro': cidade,
@@ -35,12 +42,10 @@ def index(request):
         'tipo_inst_filtro': tipo_inst,
         'categorias': todas_categorias,
         'tipos_instituicao_choices': tipos_choices,
+        'instituicoes_mapa': list(instituicoes_mapa),  # lista de dicionários
     }
     return render(request, "guiadoars/home.html", context)
 
-
-from .models import Instituicao
-from django.shortcuts import render
 
 def lista_instituicoes(request):
     instituicoes = Instituicao.objects.all()
@@ -48,7 +53,6 @@ def lista_instituicoes(request):
         'instituicoes': instituicoes
     })
 
-from django.shortcuts import get_object_or_404
 
 def instituicao_detail(request, pk):
     instituicao = get_object_or_404(Instituicao, pk=pk, ativa=True)

@@ -12,10 +12,10 @@
         </ol>
     </nav>
 
-    <div class="row">
+    <div class="row g-4">
         <!-- COLUNA ESQUERDA: informações principais -->
         <div class="col-lg-8">
-            <div class="card shadow-sm border-0 rounded-4 mb-4">
+            <div class="card shadow-sm border-0 rounded-4">
                 <div class="card-body p-4">
                     <!-- cabeçalho com nome e badge -->
                     <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
@@ -51,7 +51,7 @@
             </div>
         </div>
 
-        <!-- COLUNA DIREITA: contato e horários -->
+        <!-- COLUNA DIREITA: contato, horários e mapa -->
         <div class="col-lg-4">
             <!-- contato -->
             <div class="card shadow-sm border-0 rounded-4 mb-4">
@@ -71,16 +71,16 @@
                 </div>
             </div>
 
-            <!-- Horário de funcionamento -->
-            <div class="card shadow-sm border-0 rounded-4">
+            <!-- horário de funcionamento -->
+            <div class="card shadow-sm border-0 rounded-4 mb-4">
                 <div class="card-body p-4">
                     <h5><i class="bi bi-clock-fill me-2"></i> Horário de funcionamento</h5>
                     {% if instituicao.horarios.all %}
-                    <div class="table-responsive mt-3">
+                    <div class="table-responsive">
                         <table class="table table-sm table-hover align-middle">
                             <thead class="table-light">
                             <tr>
-                                <th scope="col">Dia da semana</th>
+                                <th scope="col">Dia</th>
                                 <th scope="col">Horário</th>
                                 <th scope="col">Intervalo</th>
                             </tr>
@@ -103,11 +103,31 @@
                         </table>
                     </div>
                     {% else %}
-                    <p class="text-muted mb-0 mt-2">Não informado</p>
+                    <p class="text-muted mb-0">Não informado</p>
                     {% endif %}
                 </div>
             </div>
-            
+
+            <!-- mapa interativo (Leaflet) -->
+            <div class="card shadow-sm border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5><i class="bi bi-map-fill me-2"></i> Localização</h5>
+                    {% if instituicao.latitude and instituicao.longitude %}
+                    <div id="mapa-publico" style="height: 300px; border-radius: 12px; margin-top: 12px;"></div>
+                    <small class="text-muted mt-2 d-block">
+                        <i class="bi bi-pin-map-fill me-1"></i>
+                        <a href="https://www.openstreetmap.org/?mlat={{ instituicao.latitude }}&mlon={{ instituicao.longitude }}#map=15/{{ instituicao.latitude }}/{{ instituicao.longitude }}" target="_blank" rel="noopener noreferrer">
+                            Abrir no OpenStreetMap
+                        </a>
+                    </small>
+                    {% else %}
+                    <p class="text-muted mb-0">Coordenadas não cadastradas para esta instituição.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- botão voltar -->
     <div class="text-center mt-5">
         <a href="{% url 'index' %}#instituicoes" class="btn btn-outline-success rounded-pill px-4">
@@ -115,4 +135,21 @@
         </a>
     </div>
 </div>
+
+<!-- Script do mapa (movido para o final) -->
+{% if instituicao.latitude and instituicao.longitude %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var lat = {{ instituicao.latitude }};
+        var lng = {{ instituicao.longitude }};
+        var map = L.map('mapa-publico').setView([lat, lng], 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.marker([lat, lng]).addTo(map)
+            .bindPopup('{{ instituicao.nome|escapejs }}');
+    });
+</script>
+{% endif %}
+
 {% endblock %}

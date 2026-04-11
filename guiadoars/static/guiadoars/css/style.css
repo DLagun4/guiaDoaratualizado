@@ -246,9 +246,6 @@ a:hover {
 .card {
     transition: transform 0.2s;
 }
-.card:hover {
-    transform: translateY(-3px);
-}
 .ratio-4x3 {
     --bs-aspect-ratio: 75%;
 }
