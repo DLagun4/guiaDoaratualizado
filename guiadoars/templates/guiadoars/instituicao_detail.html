@@ -20,7 +20,16 @@
                     <!-- cabeçalho com nome e badge -->
                     <div class="d-flex justify-content-between align-items-start flex-wrap mb-3">
                         <h1 class="card-title mb-2">{{ instituicao.nome }}</h1>
-                        <span class="badge bg-success fs-6 px-3 py-2">{{ instituicao.get_tipo_instituicao_display }}</span>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <span class="badge bg-success fs-6 px-3 py-2">{{ instituicao.get_tipo_instituicao_display }}</span>
+                            {% if instituicao.aberto_agora is None %}
+                                <span class="badge bg-secondary fs-6 px-3 py-2">Sem horário</span>
+                            {% elif instituicao.aberto_agora %}
+                                <span class="badge bg-success fs-6 px-3 py-2"><i class="bi bi-clock me-1"></i>Aberto agora</span>
+                            {% else %}
+                                <span class="badge bg-danger fs-6 px-3 py-2"><i class="bi bi-clock me-1"></i>Fechado agora</span>
+                            {% endif %}
+                        </div>
                     </div>
 
                     <!-- descrição -->

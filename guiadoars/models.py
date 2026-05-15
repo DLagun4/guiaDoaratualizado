@@ -1,26 +1,6 @@
 from django.db import models
+from django.utils import timezone
 from .utils import geocode_endereco
-
-# Tabela Topic no banco de dados
-class Topic(models.Model):
-    """Um assunto sobre o qual o usuario esta aprendendo."""
-    text = models.CharField(max_length=200)
-    date_added = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return self.text
-
-class Entry(models.Model):
-    """Algo especifico aprendido sobre um assunto."""
-    topic = models.ForeignKey(Topic, on_delete=models.CASCADE)
-    text = models.TextField()
-    date_added = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name_plural = 'entries'
-
-    def __str__(self):
-        return self.text[:50] + '...'
 
 class CategoriaDoacao(models.Model):
     nome = models.CharField(max_length=100, unique=True, verbose_name="Nome da categoria")
@@ -121,6 +101,26 @@ class Instituicao(models.Model):
                     self.longitude = lng
         super().save(*args, **kwargs)
 
+    @property
+    def aberto_agora(self):
+        """Retorna True se aberto, False se fechado, None se sem horário cadastrado."""
+        agora = timezone.localtime()
+        dia_hoje = agora.weekday()  # 0=segunda, 6=domingo
+        hora_atual = agora.time().replace(second=0, microsecond=0)
+
+        horario = self.horarios.filter(dia_semana=dia_hoje).first()
+        if not horario:
+            return None
+
+        if not (horario.abertura <= hora_atual <= horario.fechamento):
+            return False
+
+        if horario.intervalo_inicio and horario.intervalo_fim:
+            if horario.intervalo_inicio <= hora_atual <= horario.intervalo_fim:
+                return False
+
+        return True
+
     class Meta:
         verbose_name = "Instituição"
         verbose_name_plural = "Instituições"
@@ -128,3 +128,44 @@ class Instituicao(models.Model):
 
     def __str__(self):
         return self.nome
+
+
+class SugestaoInstituicao(models.Model):
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('aprovado', 'Aprovado'),
+        ('rejeitado', 'Rejeitado'),
+    ]
+
+    nome = models.CharField(max_length=200, verbose_name="Nome da Instituição")
+    descricao = models.TextField(blank=True, verbose_name="Descrição")
+    endereco = models.CharField(max_length=255, blank=True, verbose_name="Endereço")
+    cidade = models.CharField(max_length=100, verbose_name="Cidade")
+    estado = models.CharField(max_length=2, verbose_name="Estado")
+    cep = models.CharField(max_length=9, blank=True, verbose_name="CEP", help_text="Formato: 00000-000")
+    telefone = models.CharField(max_length=20, blank=True, verbose_name="Telefone")
+    email = models.EmailField(blank=True, verbose_name="E-mail")
+    site = models.URLField(blank=True, verbose_name="Site")
+    tipo_instituicao = models.CharField(
+        max_length=20,
+        choices=Instituicao.TIPO_INSTITUICAO_CHOICES,
+        default='ong',
+        verbose_name="Tipo de Instituição",
+    )
+    categorias_doacao_texto = models.TextField(
+        blank=True,
+        verbose_name="Tipos de doação aceitos",
+        help_text="Ex: Roupas, Alimentos, Brinquedos",
+    )
+
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pendente', verbose_name="Status")
+    data_envio = models.DateTimeField(auto_now_add=True, verbose_name="Data de envio")
+    observacao_admin = models.TextField(blank=True, verbose_name="Observação do administrador")
+
+    class Meta:
+        verbose_name = "Sugestão de Instituição"
+        verbose_name_plural = "Sugestões de Instituições"
+        ordering = ['-data_envio']
+
+    def __str__(self):
+        return f"{self.nome} ({self.get_status_display()})"

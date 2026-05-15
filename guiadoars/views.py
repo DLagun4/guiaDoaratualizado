@@ -2,8 +2,10 @@
 Guarda na variável instituicoes
 Envia para o template home.html"""
 
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib import messages
 from .models import Instituicao, CategoriaDoacao
+from .forms import SugestaoInstituicaoForm
 
 
 def index(request):
@@ -28,9 +30,8 @@ def index(request):
     todas_categorias = CategoriaDoacao.objects.all()
     tipos_choices = Instituicao.TIPO_INSTITUICAO_CHOICES
 
-    # Instituições com coordenadas para o mapa (todas ativas, sem filtro de cidade)
-    instituicoes_mapa = Instituicao.objects.filter(
-        ativa=True,
+    # Instituições com coordenadas para o mapa (usa o mesmo filtro da busca)
+    instituicoes_mapa = instituicoes.filter(
         latitude__isnull=False,
         longitude__isnull=False
     ).values('id', 'nome', 'latitude', 'longitude', 'cidade')
@@ -48,7 +49,7 @@ def index(request):
 
 
 def lista_instituicoes(request):
-    instituicoes = Instituicao.objects.all()
+    instituicoes = Instituicao.objects.filter(ativa=True)
     return render(request, 'guiadoars/instituicoes.html', {
         'instituicoes': instituicoes
     })
@@ -59,3 +60,15 @@ def instituicao_detail(request, pk):
     return render(request, 'guiadoars/instituicao_detail.html', {
         'instituicao': instituicao
     })
+
+
+def sugerir_instituicao(request):
+    if request.method == 'POST':
+        form = SugestaoInstituicaoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Sugestão enviada com sucesso! Nossa equipe irá analisar em breve.')
+            return redirect('sugerir_instituicao')
+    else:
+        form = SugestaoInstituicaoForm()
+    return render(request, 'guiadoars/sugerir_instituicao.html', {'form': form})

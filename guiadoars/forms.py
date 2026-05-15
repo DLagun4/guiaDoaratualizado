@@ -1,5 +1,5 @@
 from django import forms
-from .models import Instituicao, CategoriaDoacao
+from .models import Instituicao, CategoriaDoacao, SugestaoInstituicao
 
 class InstituicaoForm(forms.ModelForm):
     outros_categoria = forms.CharField(
@@ -41,3 +41,23 @@ class InstituicaoForm(forms.ModelForm):
                 defaults={'personalizada': True}
             )
             instance.categorias_doacao.add(categoria)
+
+
+class SugestaoInstituicaoForm(forms.ModelForm):
+    class Meta:
+        model = SugestaoInstituicao
+        fields = [
+            'nome', 'descricao', 'tipo_instituicao',
+            'endereco', 'cidade', 'estado', 'cep',
+            'telefone', 'email', 'site',
+            'categorias_doacao_texto',
+        ]
+        widgets = {
+            'descricao': forms.Textarea(attrs={'rows': 3, 'placeholder': 'Descreva brevemente a instituição...'}),
+            'categorias_doacao_texto': forms.Textarea(attrs={'rows': 2, 'placeholder': 'Ex: Roupas, Alimentos, Brinquedos'}),
+            'nome': forms.TextInput(attrs={'placeholder': 'Nome completo da instituição'}),
+            'cidade': forms.TextInput(attrs={'placeholder': 'Ex: São Paulo'}),
+            'estado': forms.TextInput(attrs={'placeholder': 'Ex: SP', 'maxlength': 2}),
+            'cep': forms.TextInput(attrs={'placeholder': '00000-000'}),
+            'telefone': forms.TextInput(attrs={'placeholder': '(11) 99999-9999'}),
+        }

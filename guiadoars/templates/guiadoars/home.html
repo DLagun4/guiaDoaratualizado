@@ -68,7 +68,16 @@
       <a href="{% url 'instituicao_detail' instituicao.id %}" class="text-decoration-none">
         <div class="card shadow-sm h-100">
           <div class="card-body">
-            <h5 class="card-title">{{ instituicao.nome }}</h5>
+            <div class="d-flex justify-content-between align-items-start mb-1">
+              <h5 class="card-title mb-0">{{ instituicao.nome }}</h5>
+              {% if instituicao.aberto_agora is None %}
+                <span class="badge bg-secondary ms-2 text-nowrap">Sem horário</span>
+              {% elif instituicao.aberto_agora %}
+                <span class="badge bg-success ms-2 text-nowrap">Aberto agora</span>
+              {% else %}
+                <span class="badge bg-danger ms-2 text-nowrap">Fechado</span>
+              {% endif %}
+            </div>
             <p class="card-text">{{ instituicao.descricao|truncatechars:120 }}</p>
             <p><i class="bi bi-geo-alt"></i> <strong>Cidade:</strong> {{ instituicao.cidade }}</p>
             <p>
